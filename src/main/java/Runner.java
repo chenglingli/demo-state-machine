@@ -1,6 +1,9 @@
 import com.google.common.base.Charsets;
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;
+import org.bouncycastle.crypto.Digest;
+import org.bouncycastle.crypto.digests.SHA3Digest;
+import org.bouncycastle.util.encoders.Hex;
 
 public class Runner {
 
@@ -43,10 +46,29 @@ public class Runner {
 
     public static void main(String[] args) {
 
-        Runner r = new Runner();
+//        Runner r = new Runner();
+//        r.paymentModelRunner();
+//        System.out.println("\n hello");
 
-        r.paymentModelRunner();
-
-        System.out.println("\n hello");
+        String password = "Aa123456"; //明文密码
+        System.out.println(sha3224(password.getBytes())); //打印哈希后密码
     }
+
+    /**
+     * SHA3-224哈希算法
+     *
+     *  SHA3-224是一种安全的哈希算法，它可以生成一个固定长度的输出值。
+     *
+     * @param bytes 待哈希的字节数组
+     * @return 哈希后的字符串
+     */
+    public static String sha3224(byte[] bytes) {
+        Digest digest = new SHA3Digest(224);
+        digest.update(bytes, 0, bytes.length);
+        byte[] rsData = new byte[digest.getDigestSize()];
+        digest.doFinal(rsData, 0);
+        return Hex.toHexString(rsData);
+    }
+
+
 }
